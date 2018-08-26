@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManagerCompat notificationManagerCompat;
     private EditText title;
     private EditText message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +47,17 @@ public class MainActivity extends AppCompatActivity {
                 broadcastIntent.putExtra("toastMessage", inputMessage);
                 PendingIntent actionIntent = PendingIntent.getBroadcast(MainActivity.this, 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.latte);
+
                 Notification notification = new NotificationCompat.Builder(MainActivity.this, App.CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_one)
                         .setContentTitle(inputTitle)
                         .setContentText(inputMessage)
+                        .setLargeIcon(largeIcon)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(getString(R.string.logn_dummy_test))
+                                .setBigContentTitle("Big Content Title")
+                                .setSummaryText("Summary Text"))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .setColor(Color.BLUE)
@@ -71,6 +81,15 @@ public class MainActivity extends AppCompatActivity {
                         .setSmallIcon(R.drawable.ic_two)
                         .setContentTitle(inputTitle)
                         .setContentText(inputMessage)
+                        .setStyle(new NotificationCompat.InboxStyle()
+                                .addLine("This is line1")
+                                .addLine("This is line2")
+                                .addLine("This is line3")
+                                .addLine("This is line4")
+                                .addLine("This is line5")
+                                .addLine("This is line6")
+                                .setBigContentTitle("Big Content Title")
+                                .setSummaryText("Summary Text"))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .build();
 

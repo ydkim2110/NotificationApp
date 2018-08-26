@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Notification</string>
+    <string name="logn_dummy_test">The code looks like this: Intent myIntent = new Intent(getBaseContext(), MainActivity.class); startActivity(myIntent); However, instead of returning to the already existing instance A of my MainActivity.class it creates a new instance -> it goes to onCreate() instead of onNewIntent()</string>
 </resources>
