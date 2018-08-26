@@ -2,6 +2,9 @@ package com.example.anti2110.notification;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -34,12 +37,24 @@ public class MainActivity extends AppCompatActivity {
                 String inputTitle = title.getText().toString();
                 String inputMessage = message.getText().toString();
 
+                Intent activityIntent = new Intent(MainActivity.this, MainActivity.class);
+                PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this, 0, activityIntent, 0);
+
+                Intent broadcastIntent = new Intent(MainActivity.this, NotificationReceiver.class);
+                broadcastIntent.putExtra("toastMessage", inputMessage);
+                PendingIntent actionIntent = PendingIntent.getBroadcast(MainActivity.this, 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                 Notification notification = new NotificationCompat.Builder(MainActivity.this, App.CHANNEL_1_ID)
                         .setSmallIcon(R.drawable.ic_one)
                         .setContentTitle(inputTitle)
                         .setContentText(inputMessage)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setColor(Color.BLUE)
+                        .setContentIntent(contentIntent)
+                        .setAutoCancel(true)
+                        .setOnlyAlertOnce(true)
+                        .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
                         .build();
 
                 notificationManagerCompat.notify(1, notification);
