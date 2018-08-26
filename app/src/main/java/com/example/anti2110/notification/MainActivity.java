@@ -56,36 +56,47 @@ public class MainActivity extends AppCompatActivity {
         channel2Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int progressMax = 100;
+                String title1 = "Title1";
+                String message1 = "Message1";
+                String title2 = "Title2";
+                String message2 = "Message2";
 
-                final NotificationCompat.Builder notification = new NotificationCompat.Builder(MainActivity.this, App.CHANNEL_2_ID)
+                final Notification notification1 = new NotificationCompat.Builder(MainActivity.this, App.CHANNEL_2_ID)
                         .setSmallIcon(R.drawable.ic_two)
-                        .setContentTitle("Download")
-                        .setContentText("Download in progress")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setOngoing(true)
-                        .setOnlyAlertOnce(true)
-                        .setProgress(progressMax, 0, false);
+                        .setContentTitle(title1)
+                        .setContentText(message1)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setGroup("Example Group")
+                        .build();
 
-                notificationManagerCompat.notify(2, notification.build());
+                final Notification notification2 = new NotificationCompat.Builder(MainActivity.this, App.CHANNEL_2_ID)
+                        .setSmallIcon(R.drawable.ic_two)
+                        .setContentTitle(title2)
+                        .setContentText(message2)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setGroup("Example Group")
+                        .build();
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SystemClock.sleep(2000);
+                final Notification summaryNotification = new NotificationCompat.Builder(MainActivity.this, App.CHANNEL_2_ID)
+                        .setSmallIcon(R.drawable.ic_pause)
+                        .setStyle(new NotificationCompat.InboxStyle()
+                                .addLine(title2 + " " + message2)
+                                .addLine(title1 + " " + message1)
+                                .setBigContentTitle("2 new messages")
+                                .setSummaryText("anti2110@naver.com"))
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setGroup("Example Group")
+                        .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                        .setGroupSummary(true)
+                        .build();
 
-                        for (int progress = 0; progress <= progressMax; progress += 10) {
-                            notification.setProgress(progressMax, progress, false);
-                            notificationManagerCompat.notify(2, notification.build());
-                            SystemClock.sleep(1000);
-                        }
+                SystemClock.sleep(2000);
+                notificationManagerCompat.notify(2, notification1);
+                SystemClock.sleep(2000);
+                notificationManagerCompat.notify(3, notification2);
+                SystemClock.sleep(2000);
+                notificationManagerCompat.notify(4, summaryNotification);
 
-                        notification.setContentText("Download finished")
-                                .setProgress(0, 0, false)
-                                .setOngoing(false);
-                        notificationManagerCompat.notify(2, notification.build());
-                    }
-                }).start();
             }
         });
 
